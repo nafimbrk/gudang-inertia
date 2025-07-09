@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Category;
 use App\Models\Item;
 use App\Models\Supplier;
+use App\Models\Unit;
 use App\Models\Warehouse;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
@@ -44,17 +45,19 @@ class ItemController extends Controller
         $category = Category::select('id', 'name')->get();
         $supplier = Supplier::select('id', 'name')->get();
         $warehouse = Warehouse::select('id', 'name')->get();
+        $unit = Unit::select('id', 'name')->get();
 
         return inertia('Item/Create', [
             'category' => $category,
             'supplier' => $supplier,
-            'warehouse' => $warehouse
+            'warehouse' => $warehouse,
+            'unit' => $unit
         ]);
     }
 
     public function store(Request $request)
     {
-        dd($request->all());
+        // dd($request->all());
         $request->validate([
             'name' => 'required',
             'category_id' => 'required',
@@ -70,6 +73,11 @@ class ItemController extends Controller
             'stock.required' => 'stok tidak boleh kosong',
             'unit.required' => 'unit tidak boleh kosong'
         ]);
+
+        $request['category_id'] = $request['category_id']['id'];
+        $request['supplier_id'] = $request['supplier_id']['id'];
+        $request['warehouse_id'] = $request['warehouse_id']['id'];
+        $request['unit'] = $request['unit']['id'];
 
         Item::create($request->all());
 

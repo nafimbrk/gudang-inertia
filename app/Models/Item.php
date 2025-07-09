@@ -27,4 +27,8 @@ class Item extends Model
     public function stockOuts() {
         return $this->hasMany(StockOut::class);
     }
+
+    public function unit() {
+        return $this->hasMany(Unit::class);
+    }
 }

@@ -7,6 +7,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\ItemController;
+use App\Http\Controllers\UnitController;
 use App\Http\Controllers\WarehouseController;
 
 Route::get('/', [DashboardController::class, 'index'])->name('dashboard')->middleware('auth');
@@ -59,6 +60,19 @@ Route::middleware('auth')->group(function () {
             Route::get('/{id}/edit', [ItemController::class, 'edit'])->name('edit');
             Route::put('/{id}', [ItemController::class, 'update'])->name('update');
             Route::delete('/{id}', [ItemController::class, 'destroy'])->name('destroy');
+        });
+    });
+});
+
+Route::middleware('auth')->group(function () {
+    Route::prefix('unit')->group(function () {
+        Route::name('unit.')->group(function () {
+            Route::get('/', [UnitController::class, 'index'])->name('index');
+            Route::get('/create', [UnitController::class, 'create'])->name('create');
+            Route::post('/', [UnitController::class, 'store'])->name('store');
+            Route::get('/{id}/edit', [UnitController::class, 'edit'])->name('edit');
+            Route::put('/{id}', [UnitController::class, 'update'])->name('update');
+            Route::delete('/{id}', [UnitController::class, 'destroy'])->name('destroy');
         });
     });
 });
