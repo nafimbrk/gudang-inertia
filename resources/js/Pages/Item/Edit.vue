@@ -7,6 +7,7 @@ import VueSelect from "vue3-select";
 import "vue3-select/dist/vue3-select.css";
 
 const props = defineProps({
+    item: Object,
     category: Array,
     supplier: Array,
     warehouse: Array,
@@ -18,16 +19,22 @@ const showSupplierModal = ref(false); // state modal
 const showWarehouseModal = ref(false); // state modal
 const showUnitModal = ref(false); // state modal
 
+const findById = (list, id) => list.find((item) => item.id === id) || null;
+
 const form = useForm({
-    name: "",
-    category_id: "",
-    supplier_id: "",
-    warehouse_id: "",
-    stock: "",
-    unit_id: ""
+    name: props.item.name || "",
+    category_id: findById(props.category, props.item.category_id),
+    supplier_id: findById(props.supplier, props.item.supplier_id),
+    warehouse_id: findById(props.warehouse, props.item.warehouse_id),
+    stock: props.item.stock || "",
+    unit_id: findById(props.unit, props.item.unit_id),
 });
 
-const storeItem = () => form.post(route("item.store"));
+
+const updateItem = () => {
+    form.put(route("item.update", props.item.id));
+};
+
 
 // Form untuk tambah kategori dari modal
 const categoryForm = useForm({
@@ -121,10 +128,10 @@ const storeUnit = () => {
 </script>
 
 <template>
-    <Head title="Item Create" />
+    <Head title="Item Edit" />
     <Main>
-        <h1 class="font-bold text-2xl">Tambah Item</h1>
-        <form @submit.prevent="storeItem" class="mt-10">
+        <h1 class="font-bold text-2xl">Edit Item</h1>
+        <form @submit.prevent="updateItem" class="mt-10">
             <div class="mb-5">
                 <label
                     for="name"

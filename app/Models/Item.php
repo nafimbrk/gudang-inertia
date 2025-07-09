@@ -29,6 +29,6 @@ class Item extends Model
     }
 
     public function unit() {
-        return $this->hasMany(Unit::class);
+        return $this->belongsTo(Unit::class);
     }
 }

@@ -12,11 +12,11 @@ class CategoryController extends Controller
         $search = $request->input('search');
 
         $categories = Category::query()
-        ->when($search, function ($query, $search) {
-            $query->where('name', 'like', "%$search%");
-        })
-        ->paginate(3)
-        ->withQueryString();
+            ->when($search, function ($query, $search) {
+                $query->where('name', 'like', "%$search%");
+            })
+            ->paginate(3)
+            ->withQueryString();
 
         return inertia('Category/Index', [
             'categories' => $categories,
@@ -26,7 +26,7 @@ class CategoryController extends Controller
         ]);
     }
 
-    public function create()
+    public function create(Request $request)
     {
         return inertia('Category/Create');
     }
@@ -39,7 +39,7 @@ class CategoryController extends Controller
             'name.required' => 'nama tidak boleh kosong'
         ]);
 
-        Category::create($request->all());
+        Category::create($request->only('name'));
 
         return redirect()->route('category.index')->with('success', 'data telah ditambahkan');
     }
@@ -76,5 +76,4 @@ class CategoryController extends Controller
 
         return redirect()->route('category.index')->with('success', 'data telah dihapus');
     }
-
 }

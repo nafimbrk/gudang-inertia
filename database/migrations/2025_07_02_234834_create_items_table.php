@@ -18,7 +18,6 @@ return new class extends Migration
             $table->foreignId('supplier_id')->constrained('suppliers')->onDelete('cascade');
             $table->foreignId('warehouse_id')->constrained('warehouses')->onDelete('cascade');
             $table->integer('stock')->default(0);
-            $table->string('unit');
             $table->timestamps();
         });
     }

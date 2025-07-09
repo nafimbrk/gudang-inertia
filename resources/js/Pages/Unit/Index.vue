@@ -4,11 +4,11 @@ import { Head, router, useForm, usePage } from "@inertiajs/vue3";
 import { Link } from "@inertiajs/vue3";
 import { route } from "ziggy-js";
 import Pagination from "../../Layouts/Partials/Pagination.vue";
-import { computed, ref } from "vue";
+import { computed, onMounted, ref } from "vue";
 
 const props = defineProps({
-    items: Object,
-    filters: Object,
+    units: Object,
+    filters: Object
 });
 
 const form = useForm({});
@@ -16,9 +16,9 @@ const form = useForm({});
 const flash = computed(() => usePage().props.flash);
 const show = ref(true);
 
-const deleteItem = (id) => {
+const deleteUnit = (id) => {
     if (confirm("Yakin ingin menghapus data?")) {
-        form.delete(route("item.destroy", id), {
+        form.delete(route("unit.destroy", id), {
             preserveScroll: true,
             onSuccess: () => {
                 show.value = true;
@@ -30,19 +30,20 @@ const deleteItem = (id) => {
 let search = ref(props.filters.search);
 
 const handleSearch = () => {
-    router.get(route("item.index"), { search: search.value });
+    router.get(route("unit.index"), { search: search.value });
 };
 
 const page = usePage()
 
 const user = computed(() => page.props.auth.user)
+
 </script>
 
 <template>
-    <Head title="Item List" />
+    <Head title="Unit List" />
     <Main>
         <div class="flex items-center justify-between mb-10">
-            <h1 class="font-bold text-2xl">Daftar Item</h1>
+            <h1 class="font-bold text-2xl">Daftar Unit</h1>
             <div class="flex items-center gap-2">
                 <form @submit.prevent="handleSearch" class="flex items-center">
                     <div class="relative w-full">
@@ -51,7 +52,7 @@ const user = computed(() => page.props.auth.user)
                             v-model="search"
                             id="simple-search"
                             class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                            placeholder="Search Supplier..."
+                            placeholder="Search kategori..."
                         />
                     </div>
                     <button
@@ -75,11 +76,9 @@ const user = computed(() => page.props.auth.user)
                         </svg>
                     </button>
                 </form>
-
-                <!-- Tombol Tambah -->
                 <Link
                 v-if="user.role_id === 1"
-                    :href="route('item.create')"
+                    :href="route('unit.create')"
                     class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
                 >
                     <i class="fa-solid fa-plus"></i> Tambah
@@ -132,20 +131,15 @@ const user = computed(() => page.props.auth.user)
                 >
                     <tr>
                         <th scope="col" class="px-6 py-3">#</th>
-                        <th scope="col" class="px-6 py-3">Nama Item</th>
-                        <th scope="col" class="px-6 py-3">kategori</th>
-                        <th scope="col" class="px-6 py-3">Supplier</th>
-                        <th scope="col" class="px-6 py-3">Warehouse</th>
-                        <th scope="col" class="px-6 py-3">Stock</th>
-                        <th scope="col" class="px-6 py-3">Unit</th>
+                        <th scope="col" class="px-6 py-3">Nama Unit</th>
                         <th v-if="user.role_id === 1" scope="col" class="px-6 py-3">Action</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <template v-if="items.data.length">
+                    <template v-if="units.data.length">
                         <tr
-                            v-for="(item, index) in items.data"
-                            :key="item.id"
+                            v-for="(unit, index) in units.data"
+                            :key="unit.id"
                             class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 border-gray-200"
                         >
                             <th
@@ -155,32 +149,17 @@ const user = computed(() => page.props.auth.user)
                                 {{ ++index }}
                             </th>
                             <td class="px-6 py-4">
-                                {{ item.name }}
-                            </td>
-                            <td class="px-6 py-4">
-                                {{ item.category.name }}
-                            </td>
-                            <td class="px-6 py-4">
-                                {{ item.supplier.name }}
-                            </td>
-                            <td class="px-6 py-4">
-                                {{ item.warehouse.name }}
-                            </td>
-                            <td class="px-6 py-4">
-                                {{ item.stock }}
-                            </td>
-                            <td class="px-6 py-4">
-                                {{ item.unit.name }}
+                                {{ unit.name }}
                             </td>
                             <td v-if="user.role_id === 1" class="px-6 py-4">
                                 <Link
-                                    :href="route('item.edit', item.id)"
+                                    :href="route('unit.edit', unit.id)"
                                     class="focus:outline-none text-white bg-yellow-400 hover:bg-yellow-500 focus:ring-4 focus:ring-yellow-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:focus:ring-yellow-900"
                                 >
                                     <i class="fa-solid fa-pen"></i>
                                 </Link>
                                 <button
-                                    @click="deleteItem(item.id)"
+                                    @click="deleteUnit(unit.id)"
                                     class="focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900"
                                 >
                                     <i class="fa-solid fa-trash"></i>
@@ -188,6 +167,7 @@ const user = computed(() => page.props.auth.user)
                             </td>
                         </tr>
                     </template>
+
                     <template v-else-if="search">
                         <tr
                             class="bg-white border-b dark:bg-gray-800 dark:border-gray-700"
@@ -220,7 +200,7 @@ const user = computed(() => page.props.auth.user)
         </div>
 
         <div class="flex justify-end">
-            <pagination class="mt-8" :elements="items" />
+            <pagination class="mt-8" :elements="units" />
         </div>
     </Main>
 </template>

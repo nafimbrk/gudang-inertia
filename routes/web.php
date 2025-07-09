@@ -60,6 +60,10 @@ Route::middleware('auth')->group(function () {
             Route::get('/{id}/edit', [ItemController::class, 'edit'])->name('edit');
             Route::put('/{id}', [ItemController::class, 'update'])->name('update');
             Route::delete('/{id}', [ItemController::class, 'destroy'])->name('destroy');
+            Route::post('/category/store', [ItemController::class, 'storeCategory'])->name('category.store');
+            Route::post('/supplier/store', [ItemController::class, 'storeSupplier'])->name('supplier.store');
+            Route::post('/warehouse/store', [ItemController::class, 'storeWarehouse'])->name('warehouse.store');
+            Route::post('/unit/store', [ItemController::class, 'storeUnit'])->name('unit.store');
         });
     });
 });
