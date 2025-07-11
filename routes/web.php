@@ -7,6 +7,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\ItemController;
+use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\UnitController;
 use App\Http\Controllers\WarehouseController;
 
@@ -77,6 +78,19 @@ Route::middleware('auth')->group(function () {
             Route::get('/{id}/edit', [UnitController::class, 'edit'])->name('edit');
             Route::put('/{id}', [UnitController::class, 'update'])->name('update');
             Route::delete('/{id}', [UnitController::class, 'destroy'])->name('destroy');
+        });
+    });
+});
+
+Route::middleware('auth')->group(function () {
+    Route::prefix('transaction')->group(function () {
+        Route::name('transaction.')->group(function () {
+            Route::get('/', [TransactionController::class, 'index'])->name('index');
+            Route::get('/create', [TransactionController::class, 'create'])->name('create');
+            Route::post('/', [TransactionController::class, 'store'])->name('store');
+            Route::get('/{id}/edit', [TransactionController::class, 'edit'])->name('edit');
+            Route::put('/{id}', [TransactionController::class, 'update'])->name('update');
+        Route::delete('/{id}', [TransactionController::class, 'destroy'])->name('destroy');
         });
     });
 });

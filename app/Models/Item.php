@@ -20,12 +20,8 @@ class Item extends Model
         return $this->belongsTo(Warehouse::class);
     }
 
-    public function stockIns() {
-        return $this->hasMany(StockIn::class);
-    }
-
-    public function stockOuts() {
-        return $this->hasMany(StockOut::class);
+    public function transaction() {
+        return $this->hasMany(Transaction::class);
     }
 
     public function unit() {

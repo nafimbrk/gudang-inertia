@@ -7,6 +7,9 @@ import { computed } from "vue";
 defineProps({
     totalCategory: Object,
     totalSupplier: Object,
+    totalWarehouse: Object,
+    totalItem: Object,
+    totalUnit: Object
 });
 
 const page = usePage()
@@ -31,6 +34,27 @@ const user = computed(() => page.props.auth.user)
             >
                 <p class="text-2xl text-gray-400 dark:text-gray-500">
                     Supplier {{ totalSupplier }}
+                </p>
+            </div>
+            <div
+                class="flex items-center justify-center h-24 rounded-sm bg-gray-50 dark:bg-gray-800"
+            >
+                <p class="text-2xl text-gray-400 dark:text-gray-500">
+                    Warehouse {{ totalWarehouse }}
+                </p>
+            </div>
+            <div
+                class="flex items-center justify-center h-24 rounded-sm bg-gray-50 dark:bg-gray-800"
+            >
+                <p class="text-2xl text-gray-400 dark:text-gray-500">
+                    Item {{ totalItem }}
+                </p>
+            </div>
+            <div
+                class="flex items-center justify-center h-24 rounded-sm bg-gray-50 dark:bg-gray-800"
+            >
+                <p class="text-2xl text-gray-400 dark:text-gray-500">
+                    Unit {{ totalUnit }}
                 </p>
             </div>
         </div>

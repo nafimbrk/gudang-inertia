@@ -13,6 +13,7 @@
     "dependencies": {
         "@inertiajs/vue3": "^2.0.12",
         "@vitejs/plugin-vue": "^5.2.4",
+        "dayjs": "^1.11.13",
         "vue3-select": "^0.1.2",
         "ziggy-js": "^2.5.3"
     }
